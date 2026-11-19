@@ -1,0 +1,45 @@
+name: Sync boards
+
+on:
+  schedule:
+    - cron: "17 * * * *"  # hourly
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Make the changes (otherwise only list them)"
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: sync-boards
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Get a token for the boards app
+        id: token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: usegalaxy-eu
+          repositories: project-boards  # boards are org-level; no repo access is needed
+          permission-organization-projects: write
+          permission-issues: read
+          permission-pull-requests: read
+
+      # Scheduled runs only change cards once the repo variable APPLY is "true".
+      - name: Sync
+        env:
+          GITHUB_TOKEN: ${{ steps.token.outputs.token }}
+          APPLY: ${{ github.event_name == 'workflow_dispatch' && inputs.apply || vars.APPLY == 'true' }}
+        run: python3 sync.py $([ "$APPLY" = "true" ] && echo --apply)
