@@ -1,0 +1,51 @@
+# Which work goes on which usegalaxy-eu project board.
+# sync.py reads this file. Change it with a PR; the next run picks it up.
+
+# The people whose work is synced: open PRs they wrote, and open issues or PRs assigned to them.
+people: [arash77, itisAliRH, davelopez, domgz]
+
+# Only items updated in the last N days. Keeps years-old open issues off the boards.
+max_age_days: 90
+
+# Never synced. Another board adds them already, or they are sorted by hand.
+skip_repos:
+  - galaxyproject/tools-iuc  # the Tool Developers SIG board (galaxyproject/projects/81) adds these itself
+  - usegalaxy-eu/issues      # feeds both Dev and Admin, so it stays manual for now
+
+# Each repo goes to the FIRST board whose patterns match it (shell-style, case-insensitive).
+# A board with mode "off" still claims its repos, so they do not fall through to a later board.
+#
+# mode: off     do nothing
+# mode: add     only add missing cards; people set the status by hand
+# mode: status  add missing cards, and move PRs: draft -> draft_pr, ready -> open_pr,
+#               but only while the card is in one of may_move_from ("" = no status).
+# Nothing ever sets Done: GitHub's own "closed" and "merged" rules do that.
+boards:
+  - name: Admin Tasks
+    project: usegalaxy-eu/2
+    mode: "off"  # until the Admin team decides
+    repos:
+      - usegalaxy-eu/infrastructure*
+      - usegalaxy-eu/operations
+      - usegalaxy-eu/vgcn*
+      - usegalaxy-eu/pulsar-*
+      - usegalaxy-eu/gdpr
+
+  - name: Tools
+    project: ""  # the board does not exist yet
+    mode: "off"
+    repos:
+      - bgruening/galaxytools
+      - usegalaxy-eu/usegalaxy-eu-tools
+
+  - name: Dev Tasks
+    project: usegalaxy-eu/24
+    mode: status
+    repos:
+      - galaxyproject/*
+      - usegalaxy-eu/*
+      - "*/*galaxy*"
+    status:
+      draft_pr: In progress
+      open_pr: In review
+      may_move_from: ["", Backlog, In progress]

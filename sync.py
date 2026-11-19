@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Add the team's open PRs and issues to the right usegalaxy-eu project board, and set their status.
 
-Reads boards.toml. Without --apply it only prints what it would do.
+Reads boards.yml. Without --apply it only prints what it would do.
 Needs GITHUB_TOKEN with read access to the repos and write access to the boards.
 """
 
@@ -11,8 +11,9 @@ import fnmatch
 import json
 import os
 import sys
-import tomllib
 import urllib.request
+
+import yaml
 
 API = "https://api.github.com/graphql"
 
@@ -126,11 +127,14 @@ def option_id(project, name):
 
 def main():
     ap = argparse.ArgumentParser(description="Sync the team's open PRs and issues to the usegalaxy-eu project boards.")
-    ap.add_argument("--config", default=os.path.join(os.path.dirname(__file__), "boards.toml"))
+    ap.add_argument("--config", default=os.path.join(os.path.dirname(__file__), "boards.yml"))
     ap.add_argument("--apply", action="store_true", help="make the changes (default: only print them)")
     args = ap.parse_args()
-    with open(args.config, "rb") as f:
-        cfg = tomllib.load(f)
+    with open(args.config) as f:
+        cfg = yaml.safe_load(f)
+    for board in cfg["boards"]:
+        if board["mode"] not in ("off", "add", "status"):  # unquoted `off` in YAML reads as false
+            sys.exit(f"{board['name']}: mode must be \"off\", \"add\" or \"status\", got {board['mode']!r}")
 
     since = (dt.date.today() - dt.timedelta(days=cfg["max_age_days"])).isoformat()
     nodes = {}

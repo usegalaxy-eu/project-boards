@@ -25,6 +25,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: "3.13"
+      - run: pip install pyyaml
+
       - name: Get a token for the boards app
         id: token
         uses: actions/create-github-app-token@v3.4.0
@@ -42,4 +47,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.token.outputs.token }}
           APPLY: ${{ github.event_name == 'workflow_dispatch' && inputs.apply || vars.APPLY == 'true' }}
-        run: python3 sync.py $([ "$APPLY" = "true" ] && echo --apply)
+        run: python sync.py $([ "$APPLY" = "true" ] && echo --apply)

@@ -16,4 +16,8 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - run: python3 -m unittest -v
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: "3.13"
+      - run: pip install pyyaml
+      - run: python -m unittest -v

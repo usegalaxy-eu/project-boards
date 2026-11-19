@@ -1,9 +1,11 @@
-import tomllib
 import unittest
+
+import yaml
 
 from sync import plan_card, route
 
-CFG = tomllib.load(open("boards.toml", "rb"))
+with open("boards.yml") as f:
+    CFG = yaml.safe_load(f)
 DEV = next(b for b in CFG["boards"] if b["name"] == "Dev Tasks")
 
 
