@@ -21,9 +21,9 @@ Add people to `people` if their work should be synced.
 Locally, as a dry run (it only prints what it would change):
 
 ```bash
-GITHUB_TOKEN=$(gh auth token) python3 sync.py
+GITHUB_TOKEN=$(gh auth token) uv run sync.py
 ```
 
-Add `--apply` to make the changes. Tests: `python3 -m unittest`.
+Add `--apply` to make the changes. Tests: `uv run --with pyyaml -m unittest`. You only need [uv](https://docs.astral.sh/uv/); it brings Python and PyYAML.
 
 In GitHub Actions it uses the [galaxy-eu-project-boards](https://github.com/apps/galaxy-eu-project-boards) app (variable `APP_CLIENT_ID`, secret `APP_PRIVATE_KEY`). Scheduled runs are dry runs until the repo variable `APPLY` is set to `true`; you can also run it by hand from the Actions tab with "apply" ticked.

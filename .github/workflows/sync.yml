@@ -25,10 +25,9 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-python@v7.1.0
+      - uses: astral-sh/setup-uv@v10.3.3
         with:
-          python-version: "3.13"
-      - run: pip install pyyaml
+          enable-cache: false  # one small package, nothing worth caching
 
       - name: Get a token for the boards app
         id: token
@@ -47,4 +46,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.token.outputs.token }}
           APPLY: ${{ github.event_name == 'workflow_dispatch' && inputs.apply || vars.APPLY == 'true' }}
-        run: python sync.py $([ "$APPLY" = "true" ] && echo --apply)
+        run: uv run sync.py $([ "$APPLY" = "true" ] && echo --apply)

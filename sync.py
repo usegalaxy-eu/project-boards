@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["pyyaml>=6"]
+# ///
 """Add the team's open PRs and issues to the right usegalaxy-eu project board, and set their status.
 
 Reads boards.yml. Without --apply it only prints what it would do.
