@@ -21,9 +21,13 @@ class Route(unittest.TestCase):
 
     def test_routing(self):
         self.assertEqual(self.board("galaxyproject/galaxy"), "Dev Tasks")
-        self.assertEqual(self.board("jmchilton/galaxy-tool-util-ts"), "Dev Tasks")
+        self.assertEqual(self.board("usegalaxy-eu/galaxy-social"), "Dev Tasks")  # catch-all
+        self.assertIsNone(self.board("jmchilton/galaxy-tool-util-ts"))  # outside repos only by name
         self.assertEqual(self.board("usegalaxy-eu/infrastructure-playbook"), "Admin Tasks")
+        self.assertEqual(self.board("usegalaxy-eu/ansible-cvmfs"), "Admin Tasks")
         self.assertEqual(self.board("bgruening/galaxytools"), "Tools")  # claimed by Tools, not Dev
+        self.assertEqual(self.board("usegalaxy-eu/docker-qgis"), "Tools")
+        self.assertIsNone(self.board("usegalaxy-eu/FAIRyMAGs"))  # paper repo
         self.assertIsNone(self.board("galaxyproject/tools-iuc"))  # SIG board handles it
         self.assertIsNone(self.board("usegalaxy-eu/issues"))
         self.assertIsNone(self.board("arash77/galaxy-social-main"))  # personal fork

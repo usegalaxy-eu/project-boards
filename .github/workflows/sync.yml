@@ -41,9 +41,9 @@ jobs:
           permission-issues: read
           permission-pull-requests: read
 
-      # Scheduled runs only change cards once the repo variable APPLY is "true".
+      # Scheduled runs only change cards once the repo variable APPLY is "true". Manual runs follow the "apply" box.
       - name: Sync
         env:
           GITHUB_TOKEN: ${{ steps.token.outputs.token }}
-          APPLY: ${{ github.event_name == 'workflow_dispatch' && inputs.apply || vars.APPLY == 'true' }}
+          APPLY: ${{ github.event_name == 'workflow_dispatch' && inputs.apply || github.event_name == 'schedule' && vars.APPLY == 'true' }}
         run: uv run sync.py $([ "$APPLY" = "true" ] && echo --apply)

@@ -11,6 +11,13 @@ max_age_days: 90
 skip_repos:
   - galaxyproject/tools-iuc  # the Tool Developers SIG board (galaxyproject/projects/81) adds these itself
   - usegalaxy-eu/issues      # feeds both Dev and Admin, so it stays manual for now
+  # paper and research project repos
+  - usegalaxy-eu/FAIRyMAGs
+  - usegalaxy-eu/misconception-paper-2025
+  - usegalaxy-eu/microbiology_galaxy_lab_paper_2026
+  - usegalaxy-eu/MultiOmicsClassification
+  - usegalaxy-eu/MultiClassPredict
+  - usegalaxy-eu/MAGs-visualization
 
 # Each repo goes to the FIRST board whose patterns match it (shell-style, case-insensitive).
 # A board with mode "off" still claims its repos, so they do not fall through to a later board.
@@ -30,6 +37,18 @@ boards:
       - usegalaxy-eu/vgcn*
       - usegalaxy-eu/pulsar-*
       - usegalaxy-eu/gdpr
+      - usegalaxy-eu/ansible-*
+      - usegalaxy-eu/kvm-infrastructure
+      - usegalaxy-eu/mounts
+      - usegalaxy-eu/grafana-dashboards
+      - usegalaxy-eu/team-admin
+      - usegalaxy-eu/jenkins-scripts
+      - usegalaxy-eu/cicd-inventory
+      - usegalaxy-eu/shared-data
+      - usegalaxy-eu/quota-sync
+      - usegalaxy-eu/user-stats
+      - usegalaxy-eu/hosting
+      - usegalaxy-eu/pxe-config-tarball
 
   - name: Tools
     project: ""  # the board does not exist yet
@@ -37,14 +56,18 @@ boards:
     repos:
       - bgruening/galaxytools
       - usegalaxy-eu/usegalaxy-eu-tools
+      - usegalaxy-eu/docker-*  # interactive tool images
+      - usegalaxy-eu/temporary-tools
+      - usegalaxy-eu/tool-annotations
+      - usegalaxy-eu/microbiome-ITs
 
   - name: Dev Tasks
     project: usegalaxy-eu/24
     mode: status
     repos:
       - galaxyproject/*
-      - usegalaxy-eu/*
-      - "*/*galaxy*"
+      - usegalaxy-eu/*  # everything not claimed above
+      # list outside repos by name; a pattern like */*galaxy* also catches forks and workshop repos
     status:
       draft_pr: In progress
       open_pr: In review

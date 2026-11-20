@@ -4,7 +4,7 @@ Keeps the usegalaxy-eu GitHub project boards up to date, so each group's board s
 
 Every hour, `sync.py` looks for open PRs written by the people in `boards.yml` and for open issues or PRs assigned to them. It adds each one to the board that its repo belongs to, and on boards that allow it, it sets the status of PRs: draft PRs go to "In progress", ready PRs to "In review".
 
-It never closes anything and never sets Done; each board's own "Item closed" and "Pull request merged" rules do that. It leaves cards alone that someone moved by hand (for example to Blocked) or archived.
+It never closes anything and never sets Done; each board's own "Item closed" and "Pull request merged" rules do that. It leaves cards alone that someone moved by hand (for example to Blocked) or archived. To keep an item off a board, archive its card: a deleted card comes back on the next run.
 
 ## Add your group's board
 
